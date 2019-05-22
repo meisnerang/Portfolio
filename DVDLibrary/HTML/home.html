@@ -1,0 +1,247 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DVD Library</title>
+    <link href="css/bootstrap.css"
+          rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row col-md-12" id="topRow"><br/>
+            <div class="col-md-5" id="createDvdbutton">
+                <a class="btn btn-default" href="#" role="button">Create DVD</a>
+            </div>
+            <form class="form-inline" id="search-form">
+                <div class="col-md-7 form-group" id="searchFieldsRow">
+                    <button type="button" id="search-button" class="btn btn-default">Search</button>
+                    <select class="form-control" id="searchCategorySelect" required oninvalid="this.setCustomValidity('Both Search Category and Search Term are required')" oninput="setCustomValidity('')">
+                        <option selected disabled>Search Category</option>
+                        <option id="drpDownTitle">Title</option>
+                        <option id="drpDownYear">Release Year</option>
+                        <option id="drpDownDirector">Director Name</option>
+                        <option id="drpDornRating">Rating</option>
+                    </select>
+                    <input type="text" class="form-control" id="searchTermInput" placeholder="Search Term" required oninvalid="this.setCustomValidity('Both Search Category and Search Term are required')" oninput="setCustomValidity('')">
+                </div>
+            </form>
+        </div><!--end row div -->
+
+        <div class="row col-md-12">
+            <hr /><ul class="list-group" id="errorMessages"></ul><br/>
+            <div id="dvdTableDiv">
+                <table id="dvdTable" class="table table-bordered table-striped table-hover">
+                    <tr>
+                        <th width="25%" style="text-align: center">Title</th>
+                        <th width="15%" style="text-align: center">Release Date</th>
+                        <th width="25%" style="text-align: center">Director</th>
+                        <th width="15%" style="text-align: center">Rating</th>
+                        <th width="20%" style="text-align: center"></th>
+                    </tr>
+                    <tbody id="contentRows"></tbody>
+                </table>
+            </div> <!-- end dvd table div-->
+        </div> <!-- End row div -->
+
+        <div class="row col-md-12">
+            <div id="addDvdDiv" style="display: none">
+                <h2>Create DVD: </h2><hr />
+                <form class="form-horizontal" role="form" id="create-form">
+                    <div class="form-group">
+                        <label for="create-dvd-title" class="col-md-4 control-label">
+                            Dvd Title:
+                        </label>
+                        <div class="col-md-8">
+                            <input type="text"
+                                   class="form-control"
+                                   id="create-dvd-title"
+                                   placeholder="Enter Title" required  oninvalid="this.setCustomValidity('Please enter a title for the dvd')" oninput="setCustomValidity('')">
+                        </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="create-release-year" class="col-md-4 control-label">
+                            Release Year:
+                        </label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="create-release-year">
+                                <option value="" disabled selected>Choose ReleaseYear</option>
+                                <option>1998</option>
+                                <option>2002</option>
+                                <option>2003</option>
+                                <option>2008</option>
+                                <option>2017</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-director" class="col-md-4 control-label">
+                            Director:
+                        </label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="create-director">
+                                <option value="" disabled selected>Choose Director</option>
+                                <option>Lisa Cholodenko</option>
+                                <option>Patty Jenkins</option>
+                                <option>Sofia Coppola</option>
+                                <option>Gurinder Chadha</option>
+                                <option>Kathryn Bigelow</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-rating" class="col-md-4 control-label">Rating:</label>
+                        <div class="col-md-8">
+                            <select class="form-control" id="create-rating">
+                                <option value="" disabled selected>Choose Rating</option>
+                                <option selected="selected">G</option>
+                                <option>PG</option>
+                                <option>PG-13</option>
+                                <option>R</option>
+                                <option>R-17</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="create-notes" class="col-md-4 control-label">Notes:</label>
+                        <div class="col-md-8">
+                            <textarea type="text"
+                                      class="form-control"
+                                      id="create-notes" placeholder="Enter Note">
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-4 col-md-4">
+                            <input type="hidden" id="create-dvd-id">
+                            <button type="button"
+                                    id="create-cancel-button"
+                                    class="btn btn-default"
+                                    >
+                                Cancel
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button"
+                                    id="create-button"
+                                    class="btn btn-default">
+                                Create DVD
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!--end addDvdDiv-->
+        </div>
+    <div class="row col-md-12">
+        <div id="editDvdDiv" style="display: none">
+            <h2>Edit DVD: </h2><hr />
+            <form class="form-horizontal" role="form" id="edit-form">
+                <div class="form-group">
+                    <label for="edit-dvd-title" class="col-md-4 control-label">
+                        Dvd Title:
+                    </label>
+                    <div class="col-md-8">
+                        <input type="text"
+                               class="form-control"
+                               id="edit-dvd-title"
+                               placeholder="DVD Title" required oninvalid="this.setCustomValidity('Please enter a title for the dvd')" oninput="setCustomValidity('')"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-release-year" class="col-md-4 control-label">
+                        Release Year:
+                    </label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="edit-release-year">
+                            <option value="" disabled selected>Choose ReleaseYear</option>
+                            <option>1998</option>
+                            <option>2002</option>
+                            <option>2003</option>
+                            <option>2008</option>
+                            <option>2017</option>
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-director" class="col-md-4 control-label">
+                        Director:
+                    </label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="edit-director">
+                            <option value="" disabled selected>Choose Director</option>
+                            <option>Lisa Cholodenko</option>
+                            <option>Patty Jenkins</option>
+                            <option>Sofia Coppola</option>
+                            <option>Gurinder Chadha</option>
+                            <option>Kathryn Bigelow</option>
+                        </select>
+                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-rating" class="col-md-4 control-label">Rating:</label>
+                    <div class="col-md-8">
+                        <select class="form-control" id="edit-rating" placeholder="Rating:">
+                            <option>G</option>
+                            <option>PG</option>
+                            <option>PG-13</option>
+                            <option>R</option>
+                            <option>R-17</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-notes" class="col-md-4 control-label">Notes:</label>
+                    <div class="col-md-8">
+                        <textarea type="text"
+                               class="form-control"
+                               id="edit-notes"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-4">
+                        <input type="hidden" id="edit-dvd-id">
+                        <button type="button"
+                                id="edit-cancel-button"
+                                class="btn btn-default"
+                                onclick="hideEditForm()">
+                            Cancel
+                        </button>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button"
+                                id="edit-button"
+                                class="btn btn-default">
+                            Save Changes
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div> <!--end editDvdDiv-->
+    </div>
+
+    <div>
+        <dialog id="delete-modal">
+            <h3 class="modal-header">Confirmation</h3>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this DVD from your collection?</p>
+            </div>
+            <footer class="modal-footer">
+                <button id="cancelDelete" type="button">Cancel</button>
+                <button id="confirmDelete" type="button">Yes</button>
+            </footer>
+        </dialog>
+    </div>
+    
+    <div id="showDetailsDiv"></div>
+
+    </div> <!--end container div-->
+
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

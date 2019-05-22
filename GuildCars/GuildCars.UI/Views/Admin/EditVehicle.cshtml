@@ -1,0 +1,265 @@
+﻿@model GuildCars.UI.Models.VehicleEditViewModel
+@{
+    ViewBag.Title = "EditVehicle";
+}
+
+<h2>EditVehicle</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("EditVehicle", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmEditVehicle" }))
+        {
+            @Html.ValidationSummary()
+            @Html.HiddenFor(m => m.Vehicle.VehicleId)
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Make)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.MakeId, Model.Make, new { @class = "form-control", @id = "selectedMake" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Model)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.ModelId, Model.Model, new { @class = "form-control", @id = "modelDrpDwn" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.IsNew, "Type")
+                    <div class="col-md-12">
+                        @if (Model.Vehicle.IsNew)
+                        {
+                            @Html.DropDownListFor(m => m.Vehicle.IsNew, new List<SelectListItem>
+                            {
+                            new SelectListItem { Text="New", Value="true", Selected = true},
+                            new SelectListItem { Text="Used", Value="false" }},
+                            new { @class = "form-control", @id = "isNewInput" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m=> m.Vehicle.IsNew, new List<SelectListItem>
+                            {
+                                new SelectListItem { Text = "Used", Value = "false", Selected = true },
+                                new SelectListItem { Text = "New", Value = "true" }},
+                                new {@class ="form-control", @id= "isNewInput"})
+                        }
+
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.BodyStyle, "Body Style")
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.BodyStyleId, Model.BodyStyle, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.Year)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Vehicle.Year, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.IsManualTransmission, "Transmission")
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.IsManualTransmission, new List<SelectListItem>
+                        {
+                            new SelectListItem { Text="Automatic", Value="false" },
+                            new SelectListItem { Text="Manual", Value="true" }
+                        }, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Color)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.ExteriorColorId, Model.Color, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Interior)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.Vehicle.InteriorColorId, Model.Interior, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.Mileage)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Vehicle.Mileage, new { @class = "form-control", @id = "mileageInput" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.Vin)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Vehicle.Vin, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.MSRP)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Vehicle.MSRP, new { @class = "form-control formatCurrency", Value = String.Format("{0:C}", Model.Vehicle.MSRP)})
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.Vehicle.SalePrice)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.Vehicle.SalePrice, new { @class = "form-control formatCurrency" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.Vehicle.Description)
+                    <div class="col-md-12">
+                        @Html.TextAreaFor(m => m.Vehicle.Description, new { @class = "form-control", @id = "descriptionInput", })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+
+                    <div class="col-md-12">
+                        <p><img src="@Url.Content("~/Images/" + Model.Vehicle.PhotoFile)" height="150" width="200" /></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.Label("Replace Picture")
+                    <div class="col-md-12 btn btn-info">
+                        <input id="ImageUpload" name="ImageUpload" type="file" class="form-control-file" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.Vehicle.IsFeatured) Feature this vehicle?
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+
+                    <div class="col-md-12">
+                        <button type="submit" id="edit-vehicle-button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        }
+        @using (Html.BeginForm("DeleteVehicle", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmDeleteVehicle" }))
+        {
+            @Html.HiddenFor(m => m.Vehicle.VehicleId)
+            
+                <div class="form-group">
+                    <button type="submit" id="delete-vehicle-button" class="btn btn-danger" onClick="return confirm('Are you sure you want to delete this vehicle?');">Delete</button>
+                </div>
+            
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+        $(document).ready(function () {
+
+            $('#selectedMake').change(function (event) {
+                $('#modelDrpDwn').empty();
+                getModelForSelectedMake();
+            });
+
+            
+            $('#frmEditVehicle').validate({
+                rules: {
+                    'Vehicle.Year': {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4,
+                        min: 2000,
+                        max: 2019
+                    },
+                    'Vehicle.Mileage': {
+                        required: true,
+                        min: {
+                            param: 1001, 
+                            depends: function (element) {
+                                return ($('#isNewInput option:checked').text() == "Used") 
+                            }
+                        },
+                        max: {
+                            param: 1000,
+                            depends: function (element) {
+                                return ($('#isNewInput option:checked').text() == "New") 
+                            }
+                        }
+                    },
+                    'Vehicle.Vin': {
+                        required: true,
+                        minlength: 17,
+                        maxlength: 17
+                    },
+                    'Vehicle.MSRP': {
+                        required: true,
+                        number: true,
+                        min: 1
+                    },
+                    'Vehicle.SalePrice': {
+                        required: true,
+                        number: true,
+                        min: 1
+                    },
+                    'Vehicle.Description': {
+                        required: true
+                    }
+                },
+                messages: {
+                    'Vehicle.Year': "Please enter a 4 digit year no older than 1998",
+                    'Vehicle.Mileage': "Please enter the correct mileage (less than 1000 for a New car; greater than 1000 for a Used car)",
+                    'Vehicle.Vin': "Please enter a valid VIN number",
+                    'Vehicle.MSRP': "Please enter the MSRP",
+                    'Vehicle.SalePrice': "Please enter the Sale Price",
+                    'Vehicle.Description': "Please enter a description"
+                }
+            });
+        });
+
+        function getModelForSelectedMake() {
+            console.log("successfully triggered getModelForSelectedMake function");
+
+            var param = 'makeId=' + $('#selectedMake').val();
+            console.log("here's the selected Make:" + param);
+
+
+            $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:51137/api/admin/modelsformake?' + param,
+                    success: function (results) {
+
+                        $.each(results, function (index, model) {
+
+                            $('#modelDrpDwn').append($('<option></option>').attr('value', model.ModelId).text(model.ModelName));
+                            console.log(model.ModelName);
+                        });
+                    },
+                    error: function () {
+                        alert('Error performing search, try again later!')
+                    }
+                });
+        }
+
+    </script>
+}
+

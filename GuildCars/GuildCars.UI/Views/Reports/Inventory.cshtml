@@ -1,0 +1,119 @@
+﻿
+@{
+    ViewBag.Title = "Inventory";
+}
+
+<div class="row" id="inventoryTitleRow">
+    <div class="fullWidthDiv">
+        <h2>Inventory</h2>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <h4>New Vehicles</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td><strong>Year</strong></td>
+                    <td><strong>Make</strong></td>
+                    <td><strong>Model</strong></td>
+                    <td><strong>Count</strong></td>
+                    <td><strong>Stock Value</strong></td>
+                </tr>
+            </thead>
+            <tbody id="newInventoryResults"></tbody>
+        </table>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-8">
+        <h4>Used Vehicles</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td><strong>Year</strong></td>
+                    <td><strong>Make</strong></td>
+                    <td><strong>Model</strong></td>
+                    <td><strong>Count</strong></td>
+                    <td><strong>Stock Value</strong></td>
+                </tr>
+            </thead>
+            <tbody id="usedInventoryResults"></tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            loadNewInventory();
+            loadUsedInventory();
+
+        });
+
+
+        function loadNewInventory() {
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:51137/api/reports/inventory/new',
+                success: function (results) {
+                    $('#newInventoryResults').empty();
+
+                    var html = '';
+
+                    $.each(results, function (index, inventory) {
+
+                        html += '<tr><td>' + inventory.Year + '</td><td>' + inventory.Make + '</td><td>' + inventory.Model + '</td><td>' + inventory.Count + '</td><td><span>' + inventory.StockValue + '</span></td></tr>';
+                    });
+
+                    $('span').each(function () {
+                        var item = $(this).text();
+                        var num = Number(item).toLocaleString('en');
+                        console.log(num);
+                        $(this).addClass('enMoney');
+
+                        $(this).text(num);
+                    });
+
+                    $('#newInventoryResults').append(html.toString());
+                },
+                error: function () {
+                    alert('Error retrieving list, try again later!')
+                }
+            });
+        }
+
+        function loadUsedInventory() {
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:51137/api/reports/inventory/used',
+                success: function (results) {
+                    $('#usedInventoryResults').empty();
+
+                    var html = '';
+
+                    $.each(results, function (index, inventory) {
+
+                        html += '<tr><td>' + inventory.Year + '</td><td>' + inventory.Make + '</td><td>' + inventory.Model + '</td><td>' + inventory.Count + '</td><td><span>' + inventory.StockValue + '</span></td></tr>';
+                    });
+
+                    $('span').each(function () {
+                        var item = $(this).text();
+                        var num = Number(item).toLocaleString('en');
+                        console.log(num);
+                        $(this).addClass('enMoney');
+
+                        $(this).text(num);
+                    });
+                    
+                    $('#usedInventoryResults').append(html.toString());
+                },
+                error: function () {
+                    alert('Error retrieving list, try again later!')
+                }
+            });
+        }
+    </script>
+}
+

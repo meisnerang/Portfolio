@@ -1,0 +1,153 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* Home Index page*/
+.topPadding {
+    padding-top:30px;
+}
+
+.centerParagraph {
+    text-align:center;
+    font-size:30px;
+    font-weight:800;
+}
+
+.carousel-item {
+    background-image: url('http://placehold.it/1900x1080');
+}
+
+.featuredVehicleItem {
+    text-align: center;
+    border-style: solid;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 2em;
+}
+
+#specialsItem {
+    border-style: solid;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+#alignRight {
+    text-align:right;
+}
+
+#add-special-button {
+    width: 10em;
+}
+
+#specialDeleteBtn {
+    width: 6em;
+    color: white;
+ }
+
+.specialDescription {
+    padding: 1em;
+}
+
+.deleteSpecialBtn {
+    margin-right: 1em;
+}
+
+#searchResultItem, #searchForm, #detailsResults, #frmAddMake, #specialResultItem, #frmAddSpecial, #frmAddModel, #purchaseDetail {
+    border-style: solid;
+    border-radius:5px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding-right: 20px;
+}
+
+ label {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#searchForm {
+    width: 100%;
+}
+
+.fullWidthDiv {
+    width: 100%;
+}
+
+.searchResultCol1, .searchResultCol2, .searchResultCol3, .searchResultCol4, .detailColumn, .specialsVehicle, #add-make-button {
+    margin: 1em;
+}
+
+#sale-search-button {
+    margin-top: 1em;
+    width: 15em;
+}
+
+#frmSearchSales {
+    border-style: solid;
+    border-radius: 5px;
+    margin: 1em;
+    padding: 1em;
+}
+
+/* buttons/links within ajax search results*/
+.btnStyledLink {
+    padding: .5em;
+    color: black;
+    text-decoration: none;
+}
+
+#contact-us-button {
+    margin-bottom: 20px;
+}
+
+#priceMinimumSelect, #priceMaximumSelect, #yearMinimumSelect, #yearMaximumSelect {
+    width: 100px !important;
+    text-align: right !important;
+}
+
+#priceMinimumSelect, #yearMinimumSelect {
+    margin-right: 1em;
+}
+
+#new-vehicle-search-button {
+    width: 90px;
+}
+
+#specialResultsCarousel {
+    color: red;
+}
+
+.enMoney::before {
+    content: "$";
+}
+
+.help-block {
+    color: red;
+}
+
+

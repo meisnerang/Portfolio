@@ -1,0 +1,242 @@
+﻿@model GuildCars.UI.Models.VehiclePurchaseViewModel
+
+@{
+    ViewBag.Title = "Purchase";
+}
+
+<h2>Purchase</h2>
+
+<div id="detailsResults">
+    <div class="row">
+        <div class="col-sm-3">
+            <p><strong>@Model.VehicleItem.Year @Model.VehicleItem.MakeName @Model.VehicleItem.ModelName</strong></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3">
+            <p><img src="@Url.Content("~/Images/" + Model.VehicleItem.PhotoFile)" height="150" width="200" /></p>
+        </div>
+        <div class="col-sm-3">
+            <p><strong>Body Style: </strong>@Model.VehicleItem.BodyStyleName</p>
+            <p>
+                <strong>Trans: </strong>
+                @if (Model.VehicleItem.IsManualTransmission)
+                {
+                    <text>Manual</text>
+                }
+                else
+                {
+                    <text>Automatic</text>
+                }
+            </p>
+            <p><strong>Color: </strong>@Model.VehicleItem.ExteriorColor</p>
+        </div>
+        <div class="col-sm-3">
+            <p><strong>Interior: </strong>@Model.VehicleItem.InteriorColor</p>
+            <p><strong>Mileage: </strong>@Model.VehicleItem.Mileage</p>
+            <p><strong>VIN #: </strong>@Model.VehicleItem.Vin</p>
+        </div>
+        <div class="col-sm-3">
+            <p><strong>Sale Price: </strong>@Model.VehicleItem.SalePrice.ToString("C")</p>
+            <p><strong>MSRP: </strong>@Model.VehicleItem.MSRP.ToString("C")</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 offset-sm-3">
+            <p><strong>Description: </strong>@Model.VehicleItem.Description</p>
+        </div>
+    </div>
+</div>
+
+<h2>Sales Information</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        @using (Html.BeginForm("Purchase", "Sales", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAddSale" }))
+        {
+
+            @Html.HiddenFor(m => m.VehicleItem.VehicleId)
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.Name)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.Name, new { @class = "form-control"})
+                    </div>
+                    
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.Phone)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.Phone, new { @class = "form-control", @id = "phoneInput" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.Email)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.Email, new { @class = "form-control", @id = "emailInput" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.Street1)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.Street1, new { @class = "form-control", required = true, @id = "street1Input" })
+                    </div>
+                    
+
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.Street2)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.Street2, new { @class = "form-control", @id = "street2Input" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.City)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.City, new { @class = "form-control", required = true, @id = "cityInput" })
+                    </div>
+                    
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.State)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.SaleItem.StateId, Model.State, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.ZipCode)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.ZipCode, new { @class = "form-control", required = true, @id = "zipCodeInput" })
+                    </div>
+                    
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.SaleItem.PurchasePrice)
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.SaleItem.PurchasePrice, new { @class = "form-control", required = true, @id = "purchasePriceInput", })
+                    </div>
+                    
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(m => m.PurchaseType)
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(m => m.SaleItem.PurchaseTypeId, Model.PurchaseType, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="add-sale-button" class="btn btn-primary">Submit</button>
+
+        }
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+
+
+        $(document).ready(function () {
+
+            var isEmailEmpty;
+            var isPhoneEmpty;
+           
+            $('#phoneInput').change(function (event) {
+                isEmailEmpty();
+                isPhoneEmpty();
+            })
+
+            $('#emailInput').change(function (event) {
+                isEmailEmpty();
+                isPhoneEmpty();
+            })
+            
+            function isEmailEmpty() {
+                if ($('#emailInput').val() =='') {
+                    console.log("isEmailEmpty returns true");
+                    return true;
+                }
+                else {
+                    console.log("isEmailEmpty returns false");
+                    return false;
+                }
+            }
+
+            function isPhoneEmpty() {
+                if ($('#phoneInput').val() =='') {
+                    console.log("isPhoneEmpty returns true");
+                    return true;
+                }
+                else {
+                    console.log("isPhoneEmpty returns false");
+                    return false;
+                }
+            }
+
+            function minPrice() {
+                return @Model.VehicleItem.SalePrice * .95
+            }
+
+            function maxPrice(){
+                return @Model.VehicleItem.MSRP;
+            }
+
+            $('#frmAddSale').validate({
+                rules: {
+                    'SaleItem.Name': {
+                        required: true
+                    },
+                    'SaleItem.Email': {
+                        required: isPhoneEmpty,
+                        email: true
+                    },
+                    'SaleItem.Phone': {
+                        required: isEmailEmpty
+                    },
+                    'SaleItem.Street1': {
+                        required: true
+                    },
+                    'SaleItem.City': {
+                        required: true
+                    },
+                    'SaleItem.ZipCode': {
+                        required: true,
+                        number: true,
+                        minlength: 5
+                    },
+                    'SaleItem.PurchasePrice': {
+                        required: true,
+                        number: true,
+                        min: minPrice(),
+                        max: maxPrice()
+                        
+                    }
+                },
+                messages: {
+                    'SaleItem.Name': "Please enter your name",
+                    'SaleItem.Email': "Please enter a valid email",
+                    'SaleItem.Phone': "Please enter a valid phone number",
+                    'SaleItem.Street1': "Please enter a street address",
+                    'SaleItem.City': "Please enter a city",
+                    'SaleItem.ZipCode': "Please provide your zipcode",
+                    'SaleItem.PurchasePrice': "Please enter the purchase price"
+                }
+            });
+
+        });
+    </script>
+
+
+}
+
+

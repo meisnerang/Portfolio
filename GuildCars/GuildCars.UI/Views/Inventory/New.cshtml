@@ -1,0 +1,114 @@
+﻿@model IEnumerable<GuildCars.Models.Queries.VehicleItem>
+
+@{
+    ViewBag.Title = "New";
+}
+
+    
+    <div class="row" id="newTitleRow">
+
+        <h2>New Vehicles</h2>
+        <form id="searchForm">
+            <h4 class="quickSearch">Quick Search</h4>
+            <div class="form-group form-inline">
+                <input type="text" class="form-control" id="searchTermInput" placeholder="Enter make, model or year">
+                <label for="priceMinimumSelect">Price: </label>
+                <select class="form-control" id="priceMinimumSelect">
+                    <option Selected>No Min</option>
+                    <option value="10000">$10,000</option>
+                    <option value="20000">$20,000</option>
+                    <option value="30000">$30,000</option>
+                </select>
+                <select class="form-control" id="priceMaximumSelect">
+                    <option Selected>No Max</option>
+                    <option value="15000">$15,000</option>
+                    <option value="30000">$30,000</option>
+                    <option value="50000">$50,000</option>
+                </select>
+                <label for="yearMinimumSelect">Year: </label>
+                <select class="form-control" id="yearMinimumSelect">
+                    <option Selected>No Min</option>
+                    <option>2010</option>
+                    <option>2012</option>
+                    <option>2014</option>
+                </select>
+                <select class="form-control" id="yearMaximumSelect">
+                    <option Selected>No Max</option>
+                    <option>2012</option>
+                    <option>2014</option>
+                    <option>2016</option>
+                    <option>2019</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="button" id="new-vehicle-search-button" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+    </div>
+
+        
+    
+<h2>Search Results</h2>
+<div id="searchResults">
+
+</div>
+
+@section Scripts
+{
+    <script>
+            $(document).ready(function () {
+
+                $('#new-vehicle-search-button').click(function (event) {
+                    search();
+                })
+            });
+
+            function search() {
+                var params;
+                var detailsPath = '@Url.Action("Details", "Inventory")/';
+                var imagePath = '@Url.Content("~/Images/")';
+
+
+                params = 'MakeModelOrYear=' + $('#searchTermInput').val() + '&MinPrice=' + $('#priceMinimumSelect').val() + '&MaxPrice=' + $('#priceMaximumSelect').val() + '&MinYear=' + $('#yearMinimumSelect').val() + '&MaxYear=' + $('#yearMaximumSelect').val();
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:51137/api/inventory/new/search?' + params,
+                    success: function (results) {
+                        $('#searchResults').empty();
+
+                        $.each(results, function (index, vehicle) {
+
+                            var transmission;
+                            if (vehicle.IsManualTransmission) {
+                                transmission = "Manual";
+                            }
+                            else {
+                                transmission = "Automatic";
+                            }
+
+                            var html = '<div id="searchResultItem"><div class="row"><div class="col-sm-3"><p><strong>'+ vehicle.Year + ' ' + vehicle.MakeName + ' ' + vehicle.ModelName + '</strong></p></div></div><div class="row"><div class="col-sm-3"><p><img src="' + imagePath + vehicle.PhotoFile + '" height="150" width="200" /></p></div><div class="col-sm-3"><p><strong>Body Style: </strong>'+ vehicle.BodyStyleName + '</p><p><strong>Trans: </strong>'+ transmission + '</p><p><strong>Color: </strong>'+ vehicle.ExteriorColor + '</p></div><div class="col-sm-3"><p><strong>Interior: </strong>'+ vehicle.InteriorColor + '</p><p><strong>Mileage: </strong>'+ vehicle.Mileage + '</p><p><strong>Vin: </strong>'+ vehicle.Vin + '</p></div><div class="col-sm-3"><p><strong>Sale Price: </strong><span>'+ vehicle.SalePrice + '</span></p><p><strong>MSRP: </strong><span>'+ vehicle.MSRP + '</span></p><p class="btn btn-primary" id="purchaseLink"><a href="' + detailsPath + vehicle.VehicleId + '"class="btnStyledLink">Details</a></p></div></div></div>';
+
+                            $('#searchResults').append(html.toString());
+
+                        });
+                        $('#searchResults').append('</div>');
+
+                        $('span').each(function () {
+                            var item = $(this).text();
+                            var num = Number(item).toLocaleString('en');
+                            console.log(num);
+                            $(this).addClass('enMoney');
+
+                            $(this).text(num);
+                        });
+                    },
+                    error: function () {
+                        alert('Error performing search, try again later!')
+                    }
+                });
+            }
+    </script>
+}
+

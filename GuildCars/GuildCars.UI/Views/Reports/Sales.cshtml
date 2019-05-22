@@ -1,0 +1,118 @@
+﻿@model GuildCars.UI.Models.SalesReportViewModel
+@{
+    ViewBag.Title = "Sales";
+}
+
+<h2>Sales Report</h2>
+
+<form id="frmSearchSales">
+    <h4>Filters</h4>
+    @Html.ValidationSummary()
+    <div class="form-inline">
+
+        @Html.Label("User")
+        <select class="form-control" id="userDrpDwn">
+            <option value="All">-ALL-</option>
+            
+        </select>
+
+        @Html.LabelFor(m => m.MinDate, "From Date")
+        @Html.TextBoxFor(m => m.MinDate, new { @class = "form-control", @id="minDateInput" })
+
+        @Html.LabelFor(m => m.MaxDate, "To Date")
+        @Html.TextBoxFor(m => m.MaxDate, new { @class = "form-control", @id="maxDateInput" })
+
+
+    </div>
+    <button type="button" id="sale-search-button" class="btn btn-primary">Search</button>
+</form>
+
+<div class="col-6">
+    <h4>Search Results</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td><strong>User</strong></td>
+                <td><strong>Total Sales</strong></td>
+                <td><strong>Total Vehicles</strong></td>
+            </tr>
+        </thead>
+        <tbody id="salesSearchResults"></tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            loadUserList();
+
+
+            $("#sale-search-button").click(function () {
+                
+                loadSearchResults();
+            });
+
+        });
+
+        function loadUserList() {
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:51137/api/reports/getusers',
+                success: function (results) {
+                    
+                    var html = '';
+
+                    $.each(results, function (index, users) {
+
+                        html += '<option value="'+ users.UserName +'">' + users.UserName + '</option>';
+                    });
+                    $('#userDrpDwn').append(html.toString());
+
+                },
+                error: function () {
+                    alert('Error retrieving list, try again later!')
+                }
+            });
+        }
+
+        function loadSearchResults() {
+            
+            var params;
+
+            params = 'UserName=' + $('#userDrpDwn').val() + '&MinDate=' + $('#minDateInput').val() + '&MaxDate=' + $('#maxDateInput').val();
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:51137/api/reports/sales?' + params,
+                success: function (results) {
+                    $('#salesSearchResults').empty();
+
+                    var html = '';
+
+                    $.each(results, function (index, sales) {
+
+                        html += '<tr><td>' + sales.User + '</td><td><span>' + sales.TotalSales + '</span></td><td>' + sales.TotalVehicles + '</td></tr>';
+                    });
+                    $('#salesSearchResults').append(html.toString());
+
+                    $('span').each(function () {
+                        var item = $(this).text();
+                        var num = Number(item).toLocaleString('en');
+                        console.log(num);
+                        $(this).addClass('enMoney');
+
+                        $(this).text(num);
+                    });
+                },
+                error: function () {
+                    alert('Error retrieving list, try again later!')
+                }
+            });
+        }
+
+
+    </script>
+}
+

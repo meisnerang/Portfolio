@@ -1,0 +1,52 @@
+USE master
+GO
+
+IF EXISTS(SELECT * FROM sys.databases WHERE Name = 'DvdLibrary')
+DROP DATABASE DvdLibrary
+GO
+
+CREATE DATABASE DvdLibrary
+GO
+
+USE DvdLibrary
+GO
+
+IF EXISTS(SELECT * FROM sys.tables WHERE Name = 'Dvd')
+DROP TABLE Dvd
+GO
+
+IF EXISTS(SELECT * FROM sys.tables WHERE Name = 'ReleaseYear')
+DROP TABLE ReleaseYear
+GO
+
+IF EXISTS(SELECT * FROM sys.tables WHERE Name = 'Director')
+DROP TABLE Director
+GO
+
+IF EXISTS(SELECT * FROM sys.tables WHERE Name = 'Rating')
+DROP TABLE Rating
+GO
+
+CREATE TABLE Rating (
+RatingId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+RatingType VARCHAR(10) NOT NULL
+)
+
+CREATE TABLE Director (
+DirectorId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+DirectorName VARCHAR(30) NOT NULL
+)
+
+CREATE TABLE ReleaseYear (
+ReleaseYearId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+ReleaseYearName INT NOT NULL
+)
+
+CREATE TABLE Dvd (
+DvdId INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+Title VARCHAR(45) NOT NULL,
+Notes VARCHAR(60) NULL,
+ReleaseYearId INT FOREIGN KEY REFERENCES ReleaseYear(ReleaseYearId) NOT NULL,
+DirectorId INT FOREIGN KEY REFERENCES Director(DirectorId) NOT NULL,
+RatingId INT FOREIGN KEY REFERENCES Rating(RatingId) NOT NULL
+)

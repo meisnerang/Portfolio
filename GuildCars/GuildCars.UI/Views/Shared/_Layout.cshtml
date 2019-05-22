@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="http://placehold.it/150x50?text=Logo" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("New Inventory", "New", "Inventory", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Used Inventory", "Used", "Inventory", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Specials", "Specials", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
+
+                    @if (Request.IsAuthenticated) 
+                    {
+                        <li class="nav-item">@Html.ActionLink("Sales", "Index", "Sales", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Admin", "Vehicles", "Admin", null, new { @class = "nav-link" })</li>
+                    }
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content topPadding">
+        @RenderBody()
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

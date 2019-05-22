@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Specials";
+}
+
+    <div class="row" id="specialsTitleRow">
+        <div class="col-xs-12">
+            <h2>Specials</h2>
+            @foreach (var special in Model)
+            {
+                <div class="col-xs-12" id="specialsItem">
+                    <p class="specialsVehicle"><strong>@special.Title  </strong></p>
+                    <p class="specialsVehicle">@special.Description</p>
+                </div>
+            }
+        </div>
+
+    </div>
+

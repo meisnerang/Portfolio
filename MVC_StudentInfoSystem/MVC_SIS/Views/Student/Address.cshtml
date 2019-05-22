@@ -1,0 +1,40 @@
+﻿@model Exercises.Models.ViewModels.StudentVM
+
+@{
+    ViewBag.Title = "SaveAddress";
+}
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title">Address Details</h4>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <label>Street 1</label>
+            @Html.TextBoxFor(m => m.Student.Address.Street1, new { @class = "form-control", placeholder = "street" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Student.Address.Street1)</span>
+        </div>
+        <div class="form-group">
+            <label>Street 2</label>
+            @Html.TextBoxFor(m => m.Student.Address.Street2, new { @class = "form-control", placeholder = "street 2" })
+        </div>
+        <div class="form-group">
+            <label>City</label>
+            @Html.TextBoxFor(m => m.Student.Address.City, new { @class = "form-control", placeholder = "City" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Student.Address.City)</span>
+        </div>
+        <div class="form-group">
+            <label>State</label>
+            @Html.DropDownListFor(m => m.Student.Address.State.StateAbbreviation, Model.StateItems, "-Select State-", new { @class = "form-control", })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Student.Address.State)</span>
+        </div>
+        <div class="form-group">
+            <label>Zip Code</label>
+            @Html.TextBoxFor(m => m.Student.Address.PostalCode, new { @class = "form-control", placeholder = "zip code" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Student.Address.PostalCode)</span>
+        </div>
+        <button class="btn btn-primary">Save</button>
+        @Html.ActionLink("Cancel", "List", "Student", null, new { @class = "btn btn-primary btn-info" })
+    </div>
+</div>
+

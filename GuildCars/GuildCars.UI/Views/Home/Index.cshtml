@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GuildCars.Models.Tables.Special>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @foreach (var special in Model)
+            {
+                <div class="carousel-item">
+                    <p class="centerParagraph"><a href="@Url.Action("Specials", "Home")/@special.SpecialId" id="specialLink">@special.Title</a></p>
+                    <p id="specialDescription">@special.Description</p>
+                </div>
+            }
+
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div>
+        <h2>Featured Vehicles</h2>
+        <div id="featuredResults"></div>
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script>
+            $(document).ready(function () {
+
+                $('.carousel-item').first().addClass('active');
+                loadFeaturedItems();
+            });
+
+            function loadFeaturedItems() {
+
+                var imagePath = '@Url.Content("~/Images/")';
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:51137/api/home/featured',
+                    success: function (results) {
+
+                        $.each(results, function (index, vehicle) {
+
+                            var html = '<div class="featuredVehicleItem">' + '<p><img src="' + imagePath + vehicle.PhotoFile + '" height="150" width="200" /></p>' + '<p><strong>' + vehicle.Year + ' ' + vehicle.MakeName + ' ' + vehicle.ModelName + '</strong></p>' + '<p><span><strong>' + vehicle.SalePrice + '</strong><span></p></div>';
+
+                            $('#featuredResults').append(html.toString());
+
+                        });
+                        $('span').each(function () {
+                            var item = $(this).text();
+                            var num = Number(item).toLocaleString('en');
+                            console.log(num);
+                            $(this).addClass('enMoney');
+
+                            $(this).text(num);
+                        });
+                    },
+                    error: function () {
+                        alert('Error loading featured vehicles, try again later!')
+                    }
+                });
+            }
+
+    </script>
+}

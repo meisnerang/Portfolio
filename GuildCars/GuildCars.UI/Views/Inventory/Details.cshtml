@@ -1,0 +1,70 @@
+﻿@model GuildCars.Models.Queries.VehicleItem
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+    <div id="detailsResults">
+        <div class="row">
+            <div class="col-sm-3">
+                <p><strong>@Model.Year @Model.MakeName @Model.ModelName</strong></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <p><img src="@Url.Content("~/Images/" + Model.PhotoFile)" height="150" width="200" /></p>
+            </div>
+            <div class="col-sm-3">
+                <p><strong>Body Style: </strong>@Model.BodyStyleName</p>
+                <p>
+                    <strong>Trans: </strong>
+                    @if (Model.IsManualTransmission)
+                    {
+                        <text>Manual</text>
+                    }
+                    else
+                    {
+                        <text>Automatic</text>
+                    }
+                </p>
+                <p><strong>Color: </strong>@Model.ExteriorColor</p>
+            </div>
+            <div class="col-sm-3">
+                <p><strong>Interior: </strong>@Model.InteriorColor</p>
+                <p><strong>Mileage: </strong>@Model.Mileage</p>
+                <p><strong>VIN #: </strong>@Model.Vin</p>
+            </div>
+            <div class="col-sm-3">
+                <p><strong>Sale Price: </strong>@Model.SalePrice.ToString("C")</p>
+                <p><strong>MSRP: </strong>@Model.MSRP.ToString("C")</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9 offset-sm-3">
+                <p><strong>Description: </strong>@Model.Description</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3 offset-sm-9">
+                @if (!Model.IsSold)
+                {
+                    <div class="col-xs-3 detailColumn">
+                        <p class="btn btn-info" id="contactLink"> @Html.ActionLink("Contact Us", "ContactViaDetail", "Home", new { id = @Model.VehicleId, @class = "btnStyledLink" }, null) </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-3 detailColumn">
+                        <p class="btn btn-info">Unavailable - Sold</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    
+
+
+
+
